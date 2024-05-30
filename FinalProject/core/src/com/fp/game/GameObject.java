@@ -11,8 +11,8 @@ import com.badlogic.gdx.math.Rectangle;
  * @author Admin
  */
 public class GameObject {
-    protected int xSpeed;
-    protected int ySpeed;
+    protected double xSpeed;
+    protected double ySpeed;
     protected int xPos;
     protected int yPos;
     protected int sideLength;
@@ -49,11 +49,11 @@ public class GameObject {
         return gameO.overlaps(r);
     }
     
-    public int getxSpeed() {
+    public double getxSpeed() {
         return xSpeed;
     }
 
-    public int getySpeed() {
+    public double getySpeed() {
         return ySpeed;
     }
 
@@ -66,11 +66,11 @@ public class GameObject {
     }
 
 
-    public void setxSpeed(int xSpeed) {
+    public void setxSpeed(double xSpeed) {
         this.xSpeed = xSpeed;
     }
 
-    public void setySpeed(int ySpeed) {
+    public void setySpeed(double ySpeed) {
         this.ySpeed = ySpeed;
     }
 
