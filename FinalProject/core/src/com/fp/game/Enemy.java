@@ -10,7 +10,18 @@ package com.fp.game;
  */
 public class Enemy extends GameObject{
     protected int hp;
-    public Enemy(float xSpeed, float ySpeed, float xPos, float yPos) {
+    public Enemy(float xSpeed, float ySpeed, float xPos, float yPos, int hp) {
         super(xSpeed, ySpeed, xPos, yPos);
+        this.hp = hp;
     }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+    
+    
 }
