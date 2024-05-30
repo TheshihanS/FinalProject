@@ -5,12 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Game extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	Player player1;
+        Rectangle re;
         
 	@Override
 	public void create () {
@@ -41,14 +43,14 @@ public class Game extends ApplicationAdapter {
                 }  else {
                     player1.setySpeed(0);
                 }
-                double magnitude = Math.sqrt(Math.pow(player1.getxSpeed(), 2)) + Math.pow(player1.getySpeed(), 2);
+                double magnitude = Math.sqrt(Math.pow(player1.getxSpeed(), 2) + Math.pow(player1.getySpeed(), 2));
                 if (magnitude > 1) {
-                    player1.setxSpeed(player1.getxSpeed()/magnitude);
-                    player1.setySpeed(player1.getySpeed()/magnitude);
+                    player1.setxSpeed((float)player1.getxSpeed()/(float)magnitude);
+                    player1.setySpeed((float)player1.getySpeed()/(float)magnitude);
                 }
                 
-                player1.setxPos(player1.getxPos() + (int)player1.getxSpeed());
-                player1.setyPos(player1.getyPos() + (int)player1.getySpeed());
+                player1.setxPos(player1.getxPos() + player1.getxSpeed());
+                player1.setyPos(player1.getyPos() + player1.getySpeed());
 	}
 	
 	@Override

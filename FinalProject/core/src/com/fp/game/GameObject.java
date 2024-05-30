@@ -11,10 +11,10 @@ import com.badlogic.gdx.math.Rectangle;
  * @author Admin
  */
 public class GameObject {
-    protected double xSpeed;
-    protected double ySpeed;
-    protected int xPos;
-    protected int yPos;
+    protected float xSpeed;
+    protected float ySpeed;
+    protected float xPos;
+    protected float yPos;
     protected int sideLength;
     
     /**
@@ -22,7 +22,7 @@ public class GameObject {
      * @param xPos
      * @param yPos 
      */
-    public GameObject(int xPos, int yPos) {
+    public GameObject(float xPos, float yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
     }
@@ -33,7 +33,7 @@ public class GameObject {
      * @param xPos
      * @param yPos 
      */
-    public GameObject(int xSpeed, int ySpeed, int xPos, int yPos) {
+    public GameObject(float xSpeed, float ySpeed, float xPos, float yPos) {
         this(xPos, yPos);
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
@@ -49,36 +49,36 @@ public class GameObject {
         return gameO.overlaps(r);
     }
     
-    public double getxSpeed() {
+    public float getxSpeed() {
         return xSpeed;
     }
 
-    public double getySpeed() {
+    public float getySpeed() {
         return ySpeed;
     }
 
-    public int getxPos() {
+    public float getxPos() {
         return xPos;
     }
 
-    public int getyPos() {
+    public float getyPos() {
         return yPos;
     }
 
 
-    public void setxSpeed(double xSpeed) {
+    public void setxSpeed(float xSpeed) {
         this.xSpeed = xSpeed;
     }
 
-    public void setySpeed(double ySpeed) {
+    public void setySpeed(float ySpeed) {
         this.ySpeed = ySpeed;
     }
 
-    public void setxPos(int xPos) {
+    public void setxPos(float xPos) {
         this.xPos = xPos;
     }
 
-    public void setyPos(int yPos) {
+    public void setyPos(float yPos) {
         this.yPos = yPos;
     }
 
