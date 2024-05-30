@@ -15,7 +15,7 @@ public class Projectile extends GameObject{
         this.bulletAlive = bulletAlive;
     }
 
-    public boolean isBulletAlive() {
+    public boolean getBulletAlive() {
         return bulletAlive;
     }
 
