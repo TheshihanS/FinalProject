@@ -14,10 +14,12 @@ public class Player extends GameObject{
     protected boolean shooting;
     protected int hp;
     protected int coins;
-    public Player(float xSpeed, float ySpeed, float xPos, float yPos, boolean shooting, int hp) {
+    protected boolean moving;
+    public Player(float xSpeed, float ySpeed, float xPos, float yPos, boolean shooting, int hp, boolean moving) {
         super(xSpeed,ySpeed,xPos,yPos);
         this.shooting = shooting;
         this.hp = hp;
+        this.moving = moving;
     }
 
     public int getHp() {
@@ -27,6 +29,10 @@ public class Player extends GameObject{
     public int getCoins() {
         return coins;
     }
+
+    public boolean getMoving() {
+        return moving;
+    }
     
     
     public void setHp(int hp) {
@@ -35,6 +41,10 @@ public class Player extends GameObject{
 
     public void setCoins(int coins) {
         this.coins = coins;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
     }
     
     
