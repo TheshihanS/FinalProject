@@ -202,8 +202,12 @@ public class Game extends ApplicationAdapter {
                 if (baseEnemies.get(i).isCollision((GameObject)projectiles.get(j)) == true) {
                     projectiles.get(j).setBulletAlive(false);
                     baseEnemies.get(i).setHp(baseEnemies.get(i).getHp()-1);
-                }
+                }  
             }
+            if (baseEnemies.get(i).isCollision((GameObject)player1) == true) {
+                    baseEnemies.get(i).setHp(baseEnemies.get(i).getHp()-1);
+                    player1.setHp(player1.getHp() - 1);
+                }
             if (baseEnemies.get(i).getHp() >= 1) {
                 baseEnemies.get(i).enemyPathing(player1);
                 baseEnemies.get(i).update();
