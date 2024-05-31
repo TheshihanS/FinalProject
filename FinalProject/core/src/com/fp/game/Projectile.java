@@ -10,8 +10,8 @@ package com.fp.game;
  */
 public class Projectile extends GameObject{
     protected boolean bulletAlive;
-    public Projectile(float xSpeed, float ySpeed, float xPos, float yPos, boolean bulletAlive) {
-        super(xSpeed, ySpeed, xPos, yPos);
+    public Projectile(float xSpeed, float ySpeed, float xPos, float yPos, int sideLength, boolean bulletAlive) {
+        super(xSpeed, ySpeed, xPos, yPos, sideLength);
         this.bulletAlive = bulletAlive;
     }
 

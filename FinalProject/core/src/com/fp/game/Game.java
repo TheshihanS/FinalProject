@@ -4,9 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.ArrayList;
 
@@ -22,6 +22,16 @@ public class Game extends ApplicationAdapter {
 
     ArrayList<Projectile> projectiles;
     ArrayList<Enemy> baseEnemies;
+    
+    Texture carrotWalkSheet;
+    Animation<TextureRegion> carrotWalkAni;
+    
+    float stateTime;
+        
+    SpriteBatch spriteBatch;
+    
+    int carrotCol = 8;
+    int carrotRow = 1;
 
     @Override
     public void create() {
@@ -30,16 +40,49 @@ public class Game extends ApplicationAdapter {
         projectileIMG = new Texture("bullet.jpg");
         enemyIMG = new Texture("enemy.jpg");
 
-        player1 = new Player(0, 0, 0, 0, false, 3, false);
+        player1 = new Player(0, 0, 0, 0, 50, false, 3, false);
+        
+        backgroundSheet = new Texture("tileset.jpg");
+        background1 = new TextureRegion(backgroundSheet, 0, 30, 48, 31);
+        background2 = new TextureRegion(backgroundSheet, 0, 62, 48, 31);
+        background3 = new TextureRegion(backgroundSheet, 0, 94, 48, 31);
+        
         projectiles = new ArrayList();
         baseEnemies = new ArrayList();
+        
+        carrotWalkSheet = new Texture("carrot.png");
+        
+        TextureRegion[][] tmp = TextureRegion.split(carrotWalkSheet, carrotWalkSheet.getWidth()/carrotCol, carrotWalkSheet.getHeight()/carrotRow);
+        
+        TextureRegion[] carrotWalkFrames = new TextureRegion[carrotCol * carrotRow];
+        int index = 0;
+        for (int i = 0; i < carrotRow; i++) {
+            for (int j = 0; j < carrotCol; j++) {
+                carrotWalkFrames[index++] = tmp[i][j];
+            }
+        }
+        
+        carrotWalkAni = new Animation<TextureRegion>(0.1f, carrotWalkFrames);
+        
+        spriteBatch = new SpriteBatch();
+        stateTime = 0f;
     }
 
     @Override
     public void render() {
         ScreenUtils.clear(1, 0, 0, 1);
         batch.begin();
+        
+        stateTime += Gdx.graphics.getDeltaTime();
+        TextureRegion currentFrame = carrotWalkAni.getKeyFrame(stateTime, true);
+        
+        spriteBatch.begin();
+        spriteBatch.draw(currentFrame, 50, 50);
+        spriteBatch.end();
+        
+        batch.draw(background1, 50, 50);
         batch.draw(playerIMG, player1.getxPos(), player1.getyPos(), 50, 50);
+        
         for (int i = 0; i < projectiles.size(); i++) {
             batch.draw(projectileIMG, projectiles.get(i).getxPos(), projectiles.get(i).getyPos());
         }
@@ -98,19 +141,19 @@ public class Game extends ApplicationAdapter {
 
         if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             if (player1.getMoving() == true) {
-                Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, true);
+                Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 20, true);
                 projectiles.add(p);
             } else if (lastKey == Keys.A) {
-                Projectile p = new Projectile(-(normalSpeed * 3), 0, player1.xPos + 50, player1.yPos + 25, true);
+                Projectile p = new Projectile(-(normalSpeed * 3), 0, player1.xPos + 50, player1.yPos + 25, 20, true);
                 projectiles.add(p);
             } else if (lastKey == Keys.D) {
-                Projectile p = new Projectile(normalSpeed * 3, 0, player1.xPos + 50, player1.yPos + 25, true);
+                Projectile p = new Projectile(normalSpeed * 3, 0, player1.xPos + 50, player1.yPos + 25, 20, true);
                 projectiles.add(p);
             } else if (lastKey == Keys.W) {
-                Projectile p = new Projectile(0, normalSpeed * 3, player1.xPos + 50, player1.yPos + 25, true);
+                Projectile p = new Projectile(0, normalSpeed * 3, player1.xPos + 50, player1.yPos + 25, 20, true);
                 projectiles.add(p);
             } else if (lastKey == Keys.S) {
-                Projectile p = new Projectile(0, -(normalSpeed * 3), player1.xPos + 50, player1.yPos + 25, true);
+                Projectile p = new Projectile(0, -(normalSpeed * 3), player1.xPos + 50, player1.yPos + 25, 20, true);
                 projectiles.add(p);
             }
         }
@@ -139,16 +182,16 @@ public class Game extends ApplicationAdapter {
 
         if (randomSpawn == 1) {
             if (randomSide == 1) {
-                Enemy e = new Enemy(0, 0, 0, 450, 1);
+                Enemy e = new Enemy(0, 0, 0, 450, 50, 1);
                 baseEnemies.add(e);
             } else if (randomSide == 2) {
-                Enemy e = new Enemy(0, 0, 1200, 450, 1);
+                Enemy e = new Enemy(0, 0, 1200, 450,50, 1);
                 baseEnemies.add(e);
             } else if (randomSide == 3) {
-                Enemy e = new Enemy(0, 0, 600, 0, 1);
+                Enemy e = new Enemy(0, 0, 600, 0,50, 1);
                 baseEnemies.add(e);
             } else {
-                Enemy e = new Enemy(0, 0, 600, 900, 1);
+                Enemy e = new Enemy(0, 0, 600, 900, 50, 1);
                 baseEnemies.add(e);
             }
 
@@ -177,5 +220,7 @@ public class Game extends ApplicationAdapter {
         playerIMG.dispose();
         projectileIMG.dispose();
         enemyIMG.dispose();
+        spriteBatch.dispose();
+        carrotWalkSheet.dispose();
     }
 }

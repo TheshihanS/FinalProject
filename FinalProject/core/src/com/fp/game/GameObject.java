@@ -33,10 +33,11 @@ public class GameObject {
      * @param xPos
      * @param yPos 
      */
-    public GameObject(float xSpeed, float ySpeed, float xPos, float yPos) {
+    public GameObject(float xSpeed, float ySpeed, float xPos, float yPos, int sideLength) {
         this(xPos, yPos);
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
+        this.sideLength = sideLength;
     }
 
     /**

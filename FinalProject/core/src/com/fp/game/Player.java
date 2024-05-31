@@ -15,8 +15,8 @@ public class Player extends GameObject{
     protected int hp;
     protected int coins;
     protected boolean moving;
-    public Player(float xSpeed, float ySpeed, float xPos, float yPos, boolean shooting, int hp, boolean moving) {
-        super(xSpeed,ySpeed,xPos,yPos);
+    public Player(float xSpeed, float ySpeed, float xPos, float yPos, int sideLength, boolean shooting, int hp, boolean moving) {
+        super(xSpeed,ySpeed,xPos,yPos, sideLength);
         this.shooting = shooting;
         this.hp = hp;
         this.moving = moving;
