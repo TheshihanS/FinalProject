@@ -22,6 +22,25 @@ public class Enemy extends GameObject{
     public void setHp(int hp) {
         this.hp = hp;
     }
+
     
+    
+    
+    public void enemyPathing(Player player1) {
+        if (player1.getxPos() > this.xPos) {
+            this.xSpeed = 1;
+        } else if (player1.getxPos() < this.xPos) {
+            this.xSpeed = -1;
+        } if (player1.getyPos() > this.yPos) {
+            this.ySpeed = 1;
+        } else if (player1.getyPos() < this.yPos) {
+            this.ySpeed = -1;
+        }
+    }
+    
+    public void update() {
+        this.xPos = this.xPos + this.xSpeed;
+        this.yPos = this.yPos + this.ySpeed;
+    }
     
 }

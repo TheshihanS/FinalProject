@@ -15,7 +15,7 @@ public class GameObject {
     protected float ySpeed;
     protected float xPos;
     protected float yPos;
-    protected int sideLength;
+    protected int sideLength = 50;
     
     /**
      * Base GameObject Constructor
@@ -41,12 +41,13 @@ public class GameObject {
 
     /**
      * Checking if a collision has occured
-     * @param r
+     * @param o
      * @return 
      */
-    public boolean isCollision(Rectangle r) {
-        Rectangle gameO = new Rectangle(xPos,yPos,sideLength,sideLength);
-        return gameO.overlaps(r);
+    public boolean isCollision(GameObject o) {
+        Rectangle rect1 = new Rectangle(xPos,yPos,sideLength,sideLength);
+        Rectangle rect2 = new Rectangle(o.getxPos(), o.getyPos(), o.sideLength, o.sideLength);
+        return rect1.overlaps(rect2);
     }
     
     public float getxSpeed() {

@@ -23,5 +23,4 @@ public class Projectile extends GameObject{
         this.bulletAlive = bulletAlive;
     }
     
-    
 }

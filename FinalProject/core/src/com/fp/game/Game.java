@@ -6,40 +6,46 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.util.ArrayList;
 
 public class Game extends ApplicationAdapter {
 
     SpriteBatch batch;
-    Texture img, img2, backgroundSheet;
-    Player player1;
+    Texture playerIMG, projectileIMG, backgroundSheet, enemyIMG;
     TextureRegion background1, background2, background3;
+    int lastKey, randomSide, randomSpawn;
+
+    Player player1;
+    Enemy enemy1;
 
     ArrayList<Projectile> projectiles;
+    ArrayList<Enemy> baseEnemies;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
-        img2 = new Texture("bullet.jpg");
+        playerIMG = new Texture("badlogic.jpg");
+        projectileIMG = new Texture("bullet.jpg");
+        enemyIMG = new Texture("enemy.jpg");
+
         player1 = new Player(0, 0, 0, 0, false, 3, false);
-        backgroundSheet = new Texture("tileset.jpg");
-        background1 = new TextureRegion(backgroundsSheet, 0, 30, 48, 31);
-        background2 = new TextureRegion(backgroundsSheet, 0, 62, 48, 31);
-        background3 = new TextureRegion(backgroundsSheet, 0, 94, 48, 31);
         projectiles = new ArrayList();
+        baseEnemies = new ArrayList();
     }
 
     @Override
     public void render() {
         ScreenUtils.clear(1, 0, 0, 1);
         batch.begin();
-        batch.draw(img, player1.getxPos(), player1.getyPos(), 50, 50);
+        batch.draw(playerIMG, player1.getxPos(), player1.getyPos(), 50, 50);
         for (int i = 0; i < projectiles.size(); i++) {
-            batch.draw(img2, projectiles.get(i).getxPos(), projectiles.get(i).getyPos());
+            batch.draw(projectileIMG, projectiles.get(i).getxPos(), projectiles.get(i).getyPos());
         }
-
+        for (int j = 0; j < baseEnemies.size(); j++) {
+            batch.draw(enemyIMG, baseEnemies.get(j).getxPos(), baseEnemies.get(j).getyPos());
+        }
         batch.end();
 
         //////////////
@@ -47,8 +53,6 @@ public class Game extends ApplicationAdapter {
         //////////////
         int normalSpeed = 2;
 
-        int lastKey = 0;
-        
         if (Gdx.input.isKeyPressed(Keys.A)) {
             player1.setxSpeed(-normalSpeed);
             lastKey = Keys.A;
@@ -61,7 +65,7 @@ public class Game extends ApplicationAdapter {
             player1.setxSpeed(0);
             player1.setMoving(false);
         }
-        
+
         if (Gdx.input.isKeyPressed(Keys.W)) {
             player1.setySpeed(normalSpeed);
             lastKey = Keys.W;
@@ -74,7 +78,7 @@ public class Game extends ApplicationAdapter {
             player1.setySpeed(0);
             player1.setMoving(false);
         }
-        System.out.println(lastKey);
+
         ////////////////
         ///PROJECTILE///
         ////////////////
@@ -112,6 +116,11 @@ public class Game extends ApplicationAdapter {
         }
 
         for (int i = 0; i < projectiles.size(); i++) {
+
+            if ((projectiles.get(i).getxPos() < -50 || projectiles.get(i).getxPos() > 1200 || projectiles.get(i).getyPos() < 0 || projectiles.get(i).getyPos() > 900)) {
+                projectiles.get(i).setBulletAlive(false);
+            }
+
             if (projectiles.get(i).getBulletAlive() == true) {
 
                 projectiles.get(i).setxPos(projectiles.get(i).getxPos() + projectiles.get(i).getxSpeed());
@@ -121,12 +130,52 @@ public class Game extends ApplicationAdapter {
                 projectiles.remove(i);
             }
         }
+
+        /////////////
+        ///ENEMIES///
+        /////////////
+        randomSide = (int) (Math.random() * 4) + 1;
+        randomSpawn = (int) (Math.random() * 50) + 1;
+
+        if (randomSpawn == 1) {
+            if (randomSide == 1) {
+                Enemy e = new Enemy(0, 0, 0, 450, 1);
+                baseEnemies.add(e);
+            } else if (randomSide == 2) {
+                Enemy e = new Enemy(0, 0, 1200, 450, 1);
+                baseEnemies.add(e);
+            } else if (randomSide == 3) {
+                Enemy e = new Enemy(0, 0, 600, 0, 1);
+                baseEnemies.add(e);
+            } else {
+                Enemy e = new Enemy(0, 0, 600, 900, 1);
+                baseEnemies.add(e);
+            }
+
+        }
+
+        for (int i = 0; i < baseEnemies.size(); i++) {
+            for (int j = 0; j < projectiles.size(); j++) {
+                if (baseEnemies.get(i).isCollision((GameObject)projectiles.get(j)) == true) {
+                    projectiles.get(j).setBulletAlive(false);
+                    baseEnemies.get(i).setHp(baseEnemies.get(i).getHp()-1);
+                }
+            }
+            if (baseEnemies.get(i).getHp() >= 1) {
+                baseEnemies.get(i).enemyPathing(player1);
+                baseEnemies.get(i).update();
+            } else {
+                baseEnemies.remove(i);
+            }
+        }
+
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-        img.dispose();
-        img2.dispose();
+        playerIMG.dispose();
+        projectileIMG.dispose();
+        enemyIMG.dispose();
     }
 }
