@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Game extends ApplicationAdapter {
 
     SpriteBatch batch;
-    Texture playerIMG, projectileIMG, backgroundSheet, enemyIMG;
+    Texture playerIMG, projectileIMG, backgroundSheet, spinach, squash, mushroom, eggplant, carrot, cabbage;
     TextureRegion background1, background2, background3;
     int lastKey, randomSide, randomSpawn;
 
@@ -27,8 +27,6 @@ public class Game extends ApplicationAdapter {
     Animation<TextureRegion> carrotWalkAni;
     
     float stateTime;
-        
-    SpriteBatch spriteBatch;
     
     int carrotCol = 8;
     int carrotRow = 1;
@@ -38,14 +36,20 @@ public class Game extends ApplicationAdapter {
         batch = new SpriteBatch();
         playerIMG = new Texture("badlogic.jpg");
         projectileIMG = new Texture("bullet.jpg");
-        enemyIMG = new Texture("enemy.jpg");
+        
+        spinach = new Texture("spinach.png");
+        cabbage = new Texture("cabbage.png");
+        carrot = new Texture("carrot.png");
+        eggplant = new Texture("eggplant.png");
+        mushroom = new Texture("mushroom.png");
+        squash = new Texture("squash.png");
 
         player1 = new Player(0, 0, 0, 0, 50, false, 3, false);
         
         backgroundSheet = new Texture("tileset.jpg");
-        background1 = new TextureRegion(backgroundSheet, 0, 30, 48, 31);
-        background2 = new TextureRegion(backgroundSheet, 0, 62, 48, 31);
-        background3 = new TextureRegion(backgroundSheet, 0, 94, 48, 31);
+        background1 = new TextureRegion(backgroundSheet, 0, 30, 48, 32);
+        background2 = new TextureRegion(backgroundSheet, 0, 62, 48, 32);
+        background3 = new TextureRegion(backgroundSheet, 0, 94, 48, 32);
         
         projectiles = new ArrayList();
         baseEnemies = new ArrayList();
@@ -64,7 +68,6 @@ public class Game extends ApplicationAdapter {
         
         carrotWalkAni = new Animation<TextureRegion>(0.1f, carrotWalkFrames);
         
-        spriteBatch = new SpriteBatch();
         stateTime = 0f;
     }
 
@@ -76,19 +79,23 @@ public class Game extends ApplicationAdapter {
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame = carrotWalkAni.getKeyFrame(stateTime, true);
         
-        spriteBatch.begin();
-        spriteBatch.draw(currentFrame, 50, 50);
-        spriteBatch.end();
+        for (int l = 100; l < 1250; l += 150) {
+            for (int k = 100; k < 800; k += 100) {
+                batch.draw(background1, l, k, 150, 100);
+            }
+        }
         
-        batch.draw(background1, 50, 50);
         batch.draw(playerIMG, player1.getxPos(), player1.getyPos(), 50, 50);
         
         for (int i = 0; i < projectiles.size(); i++) {
             batch.draw(projectileIMG, projectiles.get(i).getxPos(), projectiles.get(i).getyPos());
         }
         for (int j = 0; j < baseEnemies.size(); j++) {
-            batch.draw(enemyIMG, baseEnemies.get(j).getxPos(), baseEnemies.get(j).getyPos());
+            
+            baseEnemies.get(j).setImage(batch);
+            
         }
+
         batch.end();
 
         //////////////
@@ -181,17 +188,36 @@ public class Game extends ApplicationAdapter {
         randomSpawn = (int) (Math.random() * 50) + 1;
 
         if (randomSpawn == 1) {
+            
+            int ran = (int)(Math.random()*5) + 1;
+            
+            Texture enemySprite = new Texture("cabbage.png");
+            
+            if (ran == 1)  {
+                enemySprite = new Texture("cabbage.png");
+            } else if (ran == 2)  {
+                enemySprite = new Texture("carrot.png");
+            } else if (ran == 3)  {
+                enemySprite = new Texture("eggplant.png");
+            } else if (ran == 4)  {
+                enemySprite = new Texture("mushroom.png");
+            } else if (ran == 5)  {
+                enemySprite = new Texture("spinach.png");
+            } else if (ran == 6)  {
+                enemySprite = new Texture("squash.png");
+            } 
+            
             if (randomSide == 1) {
-                Enemy e = new Enemy(0, 0, 0, 450, 50, 1);
+                Enemy e = new Enemy(0, 0, 0, 450, 50, 1, enemySprite);
                 baseEnemies.add(e);
             } else if (randomSide == 2) {
-                Enemy e = new Enemy(0, 0, 1200, 450,50, 1);
+                Enemy e = new Enemy(0, 0, 1200, 450,50, 1, enemySprite);
                 baseEnemies.add(e);
             } else if (randomSide == 3) {
-                Enemy e = new Enemy(0, 0, 600, 0,50, 1);
+                Enemy e = new Enemy(0, 0, 600, 0,50, 1, enemySprite);
                 baseEnemies.add(e);
             } else {
-                Enemy e = new Enemy(0, 0, 600, 900, 50, 1);
+                Enemy e = new Enemy(0, 0, 600, 900, 50, 1, enemySprite);
                 baseEnemies.add(e);
             }
 
@@ -223,8 +249,7 @@ public class Game extends ApplicationAdapter {
         batch.dispose();
         playerIMG.dispose();
         projectileIMG.dispose();
-        enemyIMG.dispose();
-        spriteBatch.dispose();
+        spinach.dispose();
         carrotWalkSheet.dispose();
     }
 }

@@ -4,15 +4,20 @@
  */
 package com.fp.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
  *
  * @author thesh
  */
 public class Enemy extends GameObject{
     protected int hp;
-    public Enemy(float xSpeed, float ySpeed, float xPos, float yPos, int sideLength, int hp) {
+    protected Texture image;
+    public Enemy(float xSpeed, float ySpeed, float xPos, float yPos, int sideLength, int hp, Texture i) {
         super(xSpeed, ySpeed, xPos, yPos, sideLength);
         this.hp = hp;
+        image = i;
     }
 
     public int getHp() {
@@ -49,4 +54,7 @@ public class Enemy extends GameObject{
         this.yPos = this.yPos + this.ySpeed;
     }
     
+    public void setImage(SpriteBatch batch) {
+        batch.draw(image, xPos, yPos, 50, 50);
+    }
 }
