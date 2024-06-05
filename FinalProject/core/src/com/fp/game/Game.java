@@ -95,9 +95,25 @@ public class Game extends ApplicationAdapter {
             baseEnemies.get(j).setImage(batch);
             
         }
+        /////////////
+        //MAIN MENU//
+        /////////////
+        
+        int mouseXPos, mouseYPos;
+        mouseXPos = Gdx.input.getX();
+        mouseYPos = Gdx.input.getY();
 
+        mainMenu.render(batch);
+        mainMenu.buttonState(batch, mouseXPos, mouseYPos);
+        
         batch.end();
-
+        
+        //////////////////
+        //MOUSE TRACKING//
+        //////////////////
+        
+        boolean isClicked = Gdx.input.isTouched();
+        
         //////////////
         ///MOVEMENT///
         //////////////
