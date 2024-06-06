@@ -17,6 +17,8 @@ public class Game extends ApplicationAdapter {
     TextureRegion background1, background2, background3;
     int lastKey, randomSide, randomSpawn;
 
+    MainMenu mainMenu;
+    
     Player player1;
     Enemy enemy1;
 
@@ -44,6 +46,8 @@ public class Game extends ApplicationAdapter {
         mushroom = new Texture("mushroom.png");
         squash = new Texture("squash.png");
 
+        mainMenu = new MainMenu();
+        
         player1 = new Player(0, 0, 0, 0, 50, false, 3, false);
         
         backgroundSheet = new Texture("tileset.jpg");
