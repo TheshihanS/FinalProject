@@ -1,2 +1,0 @@
-# FinalProject
-finalus projectus
