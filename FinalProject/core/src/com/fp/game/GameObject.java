@@ -84,5 +84,13 @@ public class GameObject {
         this.yPos = yPos;
     }
 
+    public int getSideLength() {
+        return sideLength;
+    }
+
+    public void setSideLength(int sideLength) {
+        this.sideLength = sideLength;
+    }
+
     
 }

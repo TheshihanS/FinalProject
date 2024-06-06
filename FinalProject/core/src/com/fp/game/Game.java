@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Game extends ApplicationAdapter {
 
     SpriteBatch batch;
-    Texture playerIMG, projectileIMG, backgroundSheet, spinach, squash, mushroom, eggplant, carrot, cabbage;
+    Texture playerIMG, knifeUp, knifeRight, knifeLeft, knifeDown, backgroundSheet, spinach, squash, mushroom, eggplant, carrot, cabbage;
     TextureRegion background1, background2, background3;
     int lastKey, randomSide, randomSpawn;
 
@@ -37,7 +37,10 @@ public class Game extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         playerIMG = new Texture("badlogic.jpg");
-        projectileIMG = new Texture("bullet.jpg");
+        knifeRight = new Texture("knifeRight.png");
+        knifeLeft = new Texture("knifeLeft.png");
+        knifeUp = new Texture("knifeUp.png");
+        knifeDown = new Texture("knifeDown.png");
         
         spinach = new Texture("spinach.png");
         cabbage = new Texture("cabbage.png");
@@ -46,8 +49,6 @@ public class Game extends ApplicationAdapter {
         mushroom = new Texture("mushroom.png");
         squash = new Texture("squash.png");
 
-        mainMenu = new MainMenu();
-        
         player1 = new Player(0, 0, 0, 0, 50, false, 3, false);
         
         backgroundSheet = new Texture("tileset.jpg");
@@ -57,6 +58,8 @@ public class Game extends ApplicationAdapter {
         
         projectiles = new ArrayList();
         baseEnemies = new ArrayList();
+        
+        mainMenu = new MainMenu();
         
         carrotWalkSheet = new Texture("carrot.png");
         
@@ -92,8 +95,14 @@ public class Game extends ApplicationAdapter {
         batch.draw(playerIMG, player1.getxPos(), player1.getyPos(), 50, 50);
         
         for (int i = 0; i < projectiles.size(); i++) {
-            batch.draw(projectileIMG, projectiles.get(i).getxPos(), projectiles.get(i).getyPos());
+            if ( projectiles.get(i).getSideLength() == 8) {
+                projectiles.get(i).setImageY(batch);
+            } else {
+                projectiles.get(i).setImageX(batch);
+            }
+            
         }
+        
         for (int j = 0; j < baseEnemies.size(); j++) {
             
             baseEnemies.get(j).setImage(batch);
@@ -102,14 +111,14 @@ public class Game extends ApplicationAdapter {
         /////////////
         //MAIN MENU//
         /////////////
-        
+        /*
         int mouseXPos, mouseYPos;
         mouseXPos = Gdx.input.getX();
         mouseYPos = Gdx.input.getY();
 
         mainMenu.render(batch);
         mainMenu.buttonState(batch, mouseXPos, mouseYPos);
-        
+        */
         batch.end();
         
         //////////////////
@@ -168,19 +177,30 @@ public class Game extends ApplicationAdapter {
 
         if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
             if (player1.getMoving() == true) {
-                Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 20, true);
-                projectiles.add(p);
-            } else if (lastKey == Keys.A) {
-                Projectile p = new Projectile(-(normalSpeed * 3), 0, player1.xPos + 50, player1.yPos + 25, 20, true);
+                if (lastKey == Keys.A) {
+                Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25,  65, true, 8, knifeLeft);
                 projectiles.add(p);
             } else if (lastKey == Keys.D) {
-                Projectile p = new Projectile(normalSpeed * 3, 0, player1.xPos + 50, player1.yPos + 25, 20, true);
+                Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25,  65, true, 8, knifeRight);
                 projectiles.add(p);
             } else if (lastKey == Keys.W) {
-                Projectile p = new Projectile(0, normalSpeed * 3, player1.xPos + 50, player1.yPos + 25, 20, true);
+                Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25,  8, true, 65, knifeUp);
                 projectiles.add(p);
             } else if (lastKey == Keys.S) {
-                Projectile p = new Projectile(0, -(normalSpeed * 3), player1.xPos + 50, player1.yPos + 25, 20, true);
+                Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25,  8, true, 65, knifeDown);
+                projectiles.add(p);
+            }
+            } else if (lastKey == Keys.A) {
+                Projectile p = new Projectile(-(normalSpeed * 3), 0, player1.xPos + 50, player1.yPos + 25,  65, true, 8, knifeLeft);
+                projectiles.add(p);
+            } else if (lastKey == Keys.D) {
+                Projectile p = new Projectile(normalSpeed * 3, 0, player1.xPos + 50, player1.yPos + 25,  65, true, 8, knifeRight);
+                projectiles.add(p);
+            } else if (lastKey == Keys.W) {
+                Projectile p = new Projectile(0, normalSpeed * 3, player1.xPos + 50, player1.yPos + 25,  8, true, 65, knifeUp);
+                projectiles.add(p);
+            } else if (lastKey == Keys.S) {
+                Projectile p = new Projectile(0, -(normalSpeed * 3), player1.xPos + 50, player1.yPos + 25,  8, true, 65, knifeDown);
                 projectiles.add(p);
             }
         }
@@ -268,7 +288,6 @@ public class Game extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         playerIMG.dispose();
-        projectileIMG.dispose();
         spinach.dispose();
         carrotWalkSheet.dispose();
     }
