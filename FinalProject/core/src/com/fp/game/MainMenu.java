@@ -39,12 +39,19 @@ public class MainMenu {
         batch.draw(exitButtonInactive, EXITBUTTONX, EXITBUTTONY);
     }
     
-    public void buttonState(SpriteBatch batch, int x, int y){
+    public boolean playButtonState(SpriteBatch batch, int x, int y){
         if (x >= PLAYBUTTONX && x <= PLAYBUTTONX + BUTTON_LENGTH && y >= PLAYBUTTONY && y <= PLAYBUTTONY + BUTTON_HEIGHT){
             batch.draw(playButtonActive, PLAYBUTTONX, PLAYBUTTONY);
+            return true;
         }
+        return false;
+    }
+    public boolean exitButtonState(SpriteBatch batch, int x, int y){
         if (x >= EXITBUTTONX && x <= EXITBUTTONX + BUTTON_LENGTH && y >= EXITBUTTONY && y <= EXITBUTTONY + BUTTON_HEIGHT){
             batch.draw(exitButtonActive, EXITBUTTONX, EXITBUTTONY);
+            return true;
         }
+        return false;
     }
+    
 }

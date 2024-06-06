@@ -46,4 +46,3 @@ public class Projectile extends GameObject{
         batch.draw(sprite, xPos, yPos, 10, 70);
     }
 }
-
