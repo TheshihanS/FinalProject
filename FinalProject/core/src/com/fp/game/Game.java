@@ -13,7 +13,8 @@ import java.util.ArrayList;
 public class Game extends ApplicationAdapter {
 
     SpriteBatch batch;
-    Texture playerIMG, knifeUp, knifeRight, knifeLeft, knifeDown, backgroundSheet, spinach, squash, mushroom, eggplant, carrot, cabbage;
+    Texture playerIMG, knifeUp, knifeRight, knifeLeft, knifeDown, heart, backgroundSheet, spinach, squash, mushroom, eggplant, carrot, cabbage;
+    Texture panBL, panBR, panTR, panTL;
     TextureRegion background1, background2, background3;
     int lastKey, randomSide, randomSpawn, menuStage;
     MainMenu mainMenu;
@@ -52,6 +53,13 @@ public class Game extends ApplicationAdapter {
         mushroom = new Texture("mushroom.png");
         squash = new Texture("squash.png");
 
+        panBL = new Texture("fryingPanBL.png");
+        panBR = new Texture("fryingPanBR.png");
+        panTL = new Texture("fryingPanTL.png");
+        panTR = new Texture("fryingPanTR.png");
+        
+        heart = new Texture("apple_red.png");
+        
         player1 = new Player(0, 0, 0, 0, 50, false, 3, false);
         mainMenu = new MainMenu();
         backgroundSheet = new Texture("tileset.jpg");
@@ -84,6 +92,10 @@ public class Game extends ApplicationAdapter {
         ScreenUtils.clear(1, 0, 0, 1);
         batch.begin();
 
+        batch.draw(heart, 100, 815, 50, 50);
+        batch.draw(heart, 175, 815, 50, 50);
+        batch.draw(heart, 250, 815, 50, 50);
+        
         stateTime += Gdx.graphics.getDeltaTime();
         TextureRegion currentFrame = carrotWalkAni.getKeyFrame(stateTime, true);
 
@@ -96,10 +108,12 @@ public class Game extends ApplicationAdapter {
         batch.draw(playerIMG, player1.getxPos(), player1.getyPos(), 50, 50);
 
         for (int i = 0; i < projectiles.size(); i++) {
-            if ( projectiles.get(i).getSideLength() == 8) {
+            if (projectiles.get(i).getOrientation() == 2) {
                 projectiles.get(i).setImageY(batch);
-            } else {
+            } else if (projectiles.get(i).getOrientation() == 1){
                 projectiles.get(i).setImageX(batch);
+            } else if (projectiles.get(i).getOrientation() == 3) {
+                projectiles.get(i).setImageD(batch);
             }
             
         }
@@ -186,33 +200,33 @@ public class Game extends ApplicationAdapter {
             player1.setyPos(player1.getyPos() + player1.getySpeed());
 
             if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-                if (player1.getMoving() == true) {
-                    if (lastKey == Keys.A) {
-                        Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeLeft);
+                
+                    if (player1.getxSpeed() > 0 && player1.getySpeed() > 0) {
+                        Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 40, true, 40, panTR, 3);
                         projectiles.add(p);
-                    } else if (lastKey == Keys.D) {
-                        Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeRight);
+                    } else if (player1.getxSpeed() > 0 && player1.getySpeed() < 0) {
+                        Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 65, true, 8, panBR, 3);
                         projectiles.add(p);
-                    } else if (lastKey == Keys.W) {
-                        Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeUp);
+                    } else if (player1.getxSpeed() < 0 && player1.getySpeed() > 0) {
+                        Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 8, true, 65, panTL, 3);
                         projectiles.add(p);
-                    } else if (lastKey == Keys.S) {
-                        Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeDown);
+                    } else if (player1.getxSpeed() < 0 && player1.getySpeed() < 0) {
+                        Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 8, true, 65, panBL, 3);
+                        projectiles.add(p);
+                    } else if (player1.getxSpeed() == 0 && player1.getySpeed() > 0) {
+                        Projectile p = new Projectile(0, normalSpeed * 3, player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeUp, 2);
+                      projectiles.add(p);
+                    } else if (player1.getxSpeed() == 0 && player1.getySpeed() < 0) {
+                        Projectile p = new Projectile(0, -(normalSpeed * 3), player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeDown, 2);
+                        projectiles.add(p);
+                    } else if (player1.getxSpeed() > 0 && player1.getySpeed() == 0) {
+                        Projectile p = new Projectile(normalSpeed * 3, 0, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeRight, 1);
+                        projectiles.add(p);
+                    } else if (player1.getxSpeed() < 0 && player1.getySpeed() == 0) {
+                        Projectile p = new Projectile(-(normalSpeed * 3), 0, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeLeft, 1);
                         projectiles.add(p);
                     }
-                } else if (lastKey == Keys.A) {
-                    Projectile p = new Projectile(-(normalSpeed * 3), 0, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeLeft);
-                    projectiles.add(p);
-                } else if (lastKey == Keys.D) {
-                    Projectile p = new Projectile(normalSpeed * 3, 0, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeRight);
-                    projectiles.add(p);
-                } else if (lastKey == Keys.W) {
-                    Projectile p = new Projectile(0, normalSpeed * 3, player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeUp);
-                    projectiles.add(p);
-                } else if (lastKey == Keys.S) {
-                    Projectile p = new Projectile(0, -(normalSpeed * 3), player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeDown);
-                    projectiles.add(p);
-                }
+                
             }
 
             for (int i = 0; i < projectiles.size(); i++) {

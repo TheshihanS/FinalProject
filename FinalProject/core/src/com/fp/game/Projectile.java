@@ -16,12 +16,14 @@ public class Projectile extends GameObject{
     protected boolean bulletAlive;
     protected int ySideLength;
     protected int sideLength;
+    protected int orientation;
     protected Texture sprite;
-    public Projectile(float xSpeed, float ySpeed, float xPos, float yPos, int sideLength, boolean bulletAlive, int ySide, Texture sp) {
+    public Projectile(float xSpeed, float ySpeed, float xPos, float yPos, int sideLength, boolean bulletAlive, int ySide, Texture sp, int o) {
         super(xSpeed, ySpeed, xPos, yPos, sideLength);
         this.bulletAlive = bulletAlive;
         ySideLength = ySide;
         sprite = sp;
+        orientation = o;
     }
 
     public boolean isCollision(GameObject o) {
@@ -44,5 +46,41 @@ public class Projectile extends GameObject{
     
     public void setImageY(SpriteBatch batch) {
         batch.draw(sprite, xPos, yPos, 10, 70);
+    }
+    
+    public void setImageD(SpriteBatch batch) {
+        batch.draw(sprite, xPos, yPos, 40, 40);
+    }
+
+    public boolean isBulletAlive() {
+        return bulletAlive;
+    }
+
+    public int getySideLength() {
+        return ySideLength;
+    }
+
+    public int getSideLength() {
+        return sideLength;
+    }
+
+    public Texture getSprite() {
+        return sprite;
+    }
+
+    public void setySideLength(int ySideLength) {
+        this.ySideLength = ySideLength;
+    }
+
+    public void setSideLength(int sideLength) {
+        this.sideLength = sideLength;
+    }
+
+    public void setSprite(Texture sprite) {
+        this.sprite = sprite;
+    }
+    
+    public int getOrientation() {
+        return orientation;
     }
 }
