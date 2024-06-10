@@ -171,17 +171,25 @@ public class Game extends ApplicationAdapter {
         //MAIN MENU//
         /////////////
         if (menuStage == 0) {
-            boolean mouseOnPlay, mouseOnExit;
-            mainMenu.render(batch);
+           
+            mainMenu.render(batch, menuStage);
             mouseOnPlay = mainMenu.playButtonState(batch, mouseXPos, mouseYPos);
             mouseOnExit = mainMenu.exitButtonState(batch, mouseXPos, mouseYPos);
+            mouseOnTutorial = mainMenu.tutorialButtonState(batch, mouseXPos, mouseYPos);
             if (mouseOnPlay && isClicked) {
                 menuStage = 1;
             } else if (mouseOnExit && isClicked) {
                 System.exit(0);
+            } else if (mouseOnTutorial && isClicked){
+                menuStage = 3;
+            }
+        }else if (menuStage == 3){
+            mainMenu.render(batch,menuStage);
+            mouseOnExit = mainMenu.exitButton2State(batch, mouseXPos, mouseYPos);
+            if (mouseOnExit && isClicked){
+                menuStage = 0;
             }
         }
-
          for (int j = 0; j < baseEnemies.size(); j++) {
             
             baseEnemies.get(j).setImage(batch);
