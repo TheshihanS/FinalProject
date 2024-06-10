@@ -1,0 +1,15 @@
+heroRight.png
+size:128,64
+repeat:none
+hero
+index:2
+bounds:2,2,32,32
+hero
+index:0
+bounds:2,2,32,32
+hero
+index:1
+bounds:36,2,32,32
+hero
+index:3
+bounds:70,2,32,32

@@ -24,13 +24,13 @@ public class Game extends ApplicationAdapter {
     ArrayList<Projectile> projectiles;
     ArrayList<Enemy> baseEnemies;
 
-    Texture carrotWalkSheet;
-    Animation<TextureRegion> carrotWalkAni;
+    Texture walkUpSheet, walkDownSheet, walkRightSheet, walkLeftSheet;
+    Animation<TextureRegion> walkUpAni, walkDownAni, walkRightAni, walkLeftAni, currentAni;
 
     float stateTime;
 
-    int carrotCol = 8;
-    int carrotRow = 1;
+    int col = 3;
+    int row = 1;
 
     @Override
     public void create() {
@@ -70,21 +70,62 @@ public class Game extends ApplicationAdapter {
         projectiles = new ArrayList();
         baseEnemies = new ArrayList();
 
-        carrotWalkSheet = new Texture("carrot.png");
+        walkUpSheet = new Texture("heroUp.png");
+        walkDownSheet = new Texture("heroDown.png");
+        walkLeftSheet = new Texture("heroLeft.png");
+        walkRightSheet = new Texture("heroRight.png");
 
-        TextureRegion[][] tmp = TextureRegion.split(carrotWalkSheet, carrotWalkSheet.getWidth() / carrotCol, carrotWalkSheet.getHeight() / carrotRow);
+        TextureRegion[][] tmp = TextureRegion.split(walkUpSheet, walkUpSheet.getWidth() / col, walkUpSheet.getHeight() / row);
 
-        TextureRegion[] carrotWalkFrames = new TextureRegion[carrotCol * carrotRow];
+        TextureRegion[] walkUpFrames = new TextureRegion[col * row];
         int index = 0;
-        for (int i = 0; i < carrotRow; i++) {
-            for (int j = 0; j < carrotCol; j++) {
-                carrotWalkFrames[index++] = tmp[i][j];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                walkUpFrames[index++] = tmp[i][j];
             }
         }
 
-        carrotWalkAni = new Animation<TextureRegion>(0.1f, carrotWalkFrames);
+        walkUpAni = new Animation<TextureRegion>(0.5f, walkUpFrames);
+        
+        tmp = TextureRegion.split(walkDownSheet, walkDownSheet.getWidth() / col, walkDownSheet.getHeight() / row);
+        
+        TextureRegion[] walkDownFrames = new TextureRegion[col * row];
+            index = 0;
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    walkDownFrames[index++] = tmp[i][j];
+                }
+            }
 
+        walkDownAni = new Animation<TextureRegion>(0.5f, walkDownFrames);
+        
+        tmp = TextureRegion.split(walkRightSheet, walkRightSheet.getWidth() / col, walkRightSheet.getHeight() / row);
+        
+        TextureRegion[] walkRightFrames = new TextureRegion[col * row];
+            index = 0;
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    walkRightFrames[index++] = tmp[i][j];
+                }
+            }
+
+        walkRightAni = new Animation<TextureRegion>(0.5f, walkRightFrames);
+        
+        tmp = TextureRegion.split(walkLeftSheet, walkLeftSheet.getWidth() / col, walkLeftSheet.getHeight() / row);
+        
+        TextureRegion[] walkLeftFrames = new TextureRegion[col * row];
+            index = 0;
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    walkLeftFrames[index++] = tmp[i][j];
+                }
+            }
+
+        walkLeftAni = new Animation<TextureRegion>(0.5f, walkLeftFrames);
+        
         stateTime = 0f;
+        
+        currentAni = walkUpAni;
     }
 
     @Override
@@ -97,7 +138,7 @@ public class Game extends ApplicationAdapter {
         batch.draw(heart, 250, 815, 50, 50);
         
         stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentFrame = carrotWalkAni.getKeyFrame(stateTime, true);
+        TextureRegion currentFrame = currentAni.getKeyFrame(stateTime, true);
 
         for (int l = 100; l < 1250; l += 150) {
             for (int k = 100; k < 800; k += 100) {
@@ -105,7 +146,7 @@ public class Game extends ApplicationAdapter {
             }
         }
 
-        batch.draw(playerIMG, player1.getxPos(), player1.getyPos(), 50, 50);
+        batch.draw(currentFrame, player1.getxPos(), player1.getyPos(), 100, 100);
 
         for (int i = 0; i < projectiles.size(); i++) {
             if (projectiles.get(i).getOrientation() == 2) {
@@ -159,10 +200,12 @@ public class Game extends ApplicationAdapter {
             if (Gdx.input.isKeyPressed(Keys.A)) {
                 player1.setxSpeed(-normalSpeed);
                 lastKey = Keys.A;
+                currentAni = walkLeftAni;
                 player1.setMoving(true);
             } else if (Gdx.input.isKeyPressed(Keys.D)) {
                 player1.setxSpeed(normalSpeed);
                 lastKey = Keys.D;
+                currentAni = walkRightAni;
                 player1.setMoving(true);
             } else {
                 player1.setxSpeed(0);
@@ -172,9 +215,11 @@ public class Game extends ApplicationAdapter {
             if (Gdx.input.isKeyPressed(Keys.W)) {
                 player1.setySpeed(normalSpeed);
                 lastKey = Keys.W;
+                currentAni = walkUpAni;
                 player1.setMoving(true);
             } else if (Gdx.input.isKeyPressed(Keys.S)) {
                 player1.setySpeed(-normalSpeed);
+                currentAni = walkDownAni;
                 lastKey = Keys.S;
                 player1.setMoving(true);
             } else {
@@ -200,7 +245,6 @@ public class Game extends ApplicationAdapter {
             player1.setyPos(player1.getyPos() + player1.getySpeed());
 
             if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-                
                     if (player1.getxSpeed() > 0 && player1.getySpeed() > 0) {
                         Projectile p = new Projectile(player1.getxSpeed() * 3, player1.getySpeed() * 3, player1.xPos + 50, player1.yPos + 25, 40, true, 40, panTR, 3);
                         projectiles.add(p);
@@ -215,7 +259,7 @@ public class Game extends ApplicationAdapter {
                         projectiles.add(p);
                     } else if (player1.getxSpeed() == 0 && player1.getySpeed() > 0) {
                         Projectile p = new Projectile(0, normalSpeed * 3, player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeUp, 2);
-                      projectiles.add(p);
+                        projectiles.add(p);
                     } else if (player1.getxSpeed() == 0 && player1.getySpeed() < 0) {
                         Projectile p = new Projectile(0, -(normalSpeed * 3), player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeDown, 2);
                         projectiles.add(p);
@@ -225,6 +269,20 @@ public class Game extends ApplicationAdapter {
                     } else if (player1.getxSpeed() < 0 && player1.getySpeed() == 0) {
                         Projectile p = new Projectile(-(normalSpeed * 3), 0, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeLeft, 1);
                         projectiles.add(p);
+                    } else if (player1.getxSpeed() == 0 && player1.getySpeed() == 0) {
+                        if (lastKey == Keys.S) {
+                            Projectile p = new Projectile(0, -(normalSpeed * 3), player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeDown, 2);
+                            projectiles.add(p);
+                        } else if (lastKey == Keys.D) {
+                            Projectile p = new Projectile(normalSpeed * 3, 0, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeRight, 1);
+                            projectiles.add(p);
+                        } else if (lastKey == Keys.W) {
+                            Projectile p = new Projectile(0, normalSpeed * 3, player1.xPos + 50, player1.yPos + 25, 8, true, 65, knifeUp, 2);
+                            projectiles.add(p);
+                        } else if (lastKey == Keys.A) {
+                            Projectile p = new Projectile(-(normalSpeed * 3), 0, player1.xPos + 50, player1.yPos + 25, 65, true, 8, knifeLeft, 1);
+                            projectiles.add(p);
+                        }  
                     }
                 
             }
@@ -314,6 +372,6 @@ public class Game extends ApplicationAdapter {
         batch.dispose();
         playerIMG.dispose();
         spinach.dispose();
-        carrotWalkSheet.dispose();
+        walkUpSheet.dispose();
     }
 }
