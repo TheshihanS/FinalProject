@@ -65,7 +65,7 @@ public class MainMenu {
         title = new Texture("TITLE.PNG");
         tutorial = new Texture("tutorial.PNG");
         endTitle = new Texture("Game_Over.PNG");
-        returnButtonInactive = new Texture("returnButtonInacitve.PNG");
+        returnButtonInactive = new Texture("returnButtonInactive.PNG");
         returnButtonActive = new Texture("returnButtonActive.PNG");
         saveButtonActive = new Texture("saveButtonActive.PNG");
         saveButtonInactive = new Texture("saveButtonInactive.PNG");

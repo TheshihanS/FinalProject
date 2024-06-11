@@ -8,12 +8,15 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class Game extends ApplicationAdapter {
@@ -42,6 +45,72 @@ public class Game extends ApplicationAdapter {
     int col = 3;
     int row = 1;
 
+    public ArrayList<String> fileReaderName(File f, ArrayList<String> al) {
+        try {
+            
+            Scanner s = new Scanner(f);
+            
+            while (s.hasNextLine()) {
+                al.add(s.nextLine());
+                s.nextLine();
+            }
+            
+            return al;
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR " + e);
+        }
+        return null;
+    }
+    
+    public ArrayList<Integer> fileReaderScore(File f, ArrayList<Integer> al) {
+        try {
+            
+            Scanner s = new Scanner(f);
+            
+            while (s.hasNextLine()) {
+                s.nextLine();
+                al.add(Integer.parseInt(s.nextLine()));
+            }
+            
+            return al;
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR " + e);
+        }
+        return null;
+    }
+    
+    public void  sort(ArrayList<Integer> score, ArrayList<String> name) {
+        boolean swapped = true;
+        // the number of passes
+        int passes = 1;
+        
+        while (swapped == true) {
+            // assumes no swaps will happen
+            swapped = false;
+            // checks through the entire array minus the number of passes because on each pass the last number will always be in the right order
+            for (int i  = 0; i < (score.size() - passes); i++) {
+                // checks i and the value after it, if i is bigger
+                if (score.get(i) > score.get(i+1)) {
+                    // swaps them
+                    int temp1 = score.get(i);
+                    score.set(i, score.get(i+1));
+                    score.set(i+1, temp1);
+
+                    String temp2 = name.get(i);
+                    name.set(i, name.get(i+1));
+                    name.set(i+1, temp2);
+                    
+                    // and sets the swapped variable to true
+                    swapped = true;
+                } 
+            }
+            // then adds one to the passes
+            passes += 1;
+        }
+    }
+
+
+    
     @Override
     public void create() {
         batch = new SpriteBatch();
@@ -203,10 +272,11 @@ public class Game extends ApplicationAdapter {
                 player1.setxPos(650);
                 player1.setyPos(450);
                 baseEnemies.clear();
-            }  else if (mouseOnSave && isClicked) {
+            } else if (mouseOnSave && isClicked) {
                 userName = JOptionPane.showInputDialog(null, "ENTER YOUR NAME!");
                 try {
-                    Files.write(Paths.get("saveScores.txt"), (userName + "\n" + player1.getKillCount() + "\n").getBytes(), StandardOpenOption.APPEND);
+                    Files.write(Paths.get("nameScores.txt"), (userName + "\n").getBytes() , StandardOpenOption.APPEND);
+                    Files.write(Paths.get("saveScores.txt"), ("" + player1.getKillCount() + "\n").getBytes(), StandardOpenOption.APPEND);
                 } catch (IOException e) {
                     System.out.println("Error: " + e);
                 }
@@ -486,7 +556,6 @@ public class Game extends ApplicationAdapter {
                 }
             }
         }
-
     }
 
     @Override
