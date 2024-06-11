@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -33,6 +36,8 @@ public class Game extends ApplicationAdapter {
     Animation<TextureRegion> walkUpAni, walkDownAni, walkRightAni, walkLeftAni, currentAni;
     FileWriter writer;
     float stateTime;
+
+    String userName;
 
     int col = 3;
     int row = 1;
@@ -196,7 +201,12 @@ public class Game extends ApplicationAdapter {
                 menuStage = 0;
 
             } else if (mouseOnSave && isClicked) {
-                JOptionPane.showMessageDialog(null, "WORKS");//this is were you load name and save
+                userName = JOptionPane.showInputDialog(null, "ENTER YOUR NAME!");
+                try {
+                    Files.write(Paths.get("saveScores.txt"), (userName + "\n" + player1.getKillCount() + "\n").getBytes(), StandardOpenOption.APPEND);
+                } catch (IOException e) {
+                    System.out.println("Error: " + e);
+                }
             }
         } else if (menuStage == 1) {
 
@@ -273,13 +283,6 @@ public class Game extends ApplicationAdapter {
         }
 
         
-        try {
-            writer = new FileWriter("saveScores.txt");
-            writer.write("wjpfawalfw\nudwhadiwjadw");
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Error: " + e);
-        }
 
         batch.end();
 
