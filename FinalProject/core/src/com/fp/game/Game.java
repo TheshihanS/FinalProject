@@ -170,6 +170,7 @@ public class Game extends ApplicationAdapter {
         /////////////
         //MAIN MENU//
         /////////////
+        boolean mouseOnPlay, mouseOnExit, mouseOnTutorial;
         if (menuStage == 0) {
            
             mainMenu.render(batch, menuStage);
