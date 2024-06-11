@@ -12,19 +12,33 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * @author Admin
  */
 public class MainMenu {
-
-    private static final int PLAYBUTTONX = 400;
+    //play button properties
+    private static final int PLAYBUTTONX = 480;
     private static final int PLAYBUTTONY = 400;
-    private static final int EXITBUTTONX = 400;
+    //exit button properties
+    private static final int EXITBUTTONX = 480;
     private static final int EXITBUTTONY = 90;
     private static final int EXITBUTTONX2 = 870;
     private static final int EXITBUTTONY2 = 70;
+    //tutorial button properties
     private static final int TUTORIALBUTTONX = 1200;
     private static final int TUTORIALBUTTONY = 700;
+    //title properties
     private static final int TITLEX = 0;
     private static final int TITLEY = 750;
-    private static final int BUTTON_LENGTH = 524;
-    private static final int BUTTON_HEIGHT = 234;
+    //save button properties
+    private static final int SAVEBUTTONX = 560;
+    private static final int SAVEBUTTONY = 400;
+    //return button properties
+    private static final int RETURNBUTTONX = 0;
+    private static final int RETURNBUTTONY = 0;
+    //end title properties
+    private static final int ENDTITLEX = 90;
+    private static final int ENDTITLEY = 620;
+    //play and exit button size
+    private static final int BUTTON_LENGTH = (int)(524 * 0.7);
+    private static final int BUTTON_HEIGHT = (int)(234 * 0.7);
+    //tutorial button size
     private static final int TUTORIAL_LENGTH = 200;
     private static final int TUTORIAL_HEIGHT = 200;
     private final Texture background;
@@ -35,7 +49,12 @@ public class MainMenu {
     private final Texture tutorialButton;
     private final Texture title;
     private final Texture tutorial;
-
+    private final Texture endTitle;
+    private final Texture returnButtonInactive;
+    private final Texture returnButtonActive;
+    private final Texture saveButtonInactive;
+    private final Texture saveButtonActive;
+    
     public MainMenu() {
         background = new Texture("mainmenuart.JPG");
         playButtonActive = new Texture("playButtonActive.PNG");
@@ -45,6 +64,11 @@ public class MainMenu {
         tutorialButton = new Texture("Question_Mark_Icon.PNG");
         title = new Texture("TITLE.PNG");
         tutorial = new Texture("tutorial.PNG");
+        endTitle = new Texture("Game_Over.PNG");
+        returnButtonInactive = new Texture("returnButtonInacitve.PNG");
+        returnButtonActive = new Texture("returnButtonActive.PNG");
+        saveButtonActive = new Texture("saveButtonActive.PNG");
+        saveButtonInactive = new Texture("saveButtonInactive.PNG");
     }
 
     public void render(SpriteBatch batch, int stage) {
@@ -57,12 +81,16 @@ public class MainMenu {
         }else if (stage == 3){
             batch.draw(exitButtonInactive, EXITBUTTONX2, EXITBUTTONY2, BUTTON_LENGTH, BUTTON_HEIGHT);
             batch.draw(tutorial, 0, 0, 650, 850);
+        }else if (stage == 2){
+            batch.draw(endTitle, ENDTITLEX, ENDTITLEY);
+            batch.draw(returnButtonInactive, RETURNBUTTONX, RETURNBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
+            batch.draw(saveButtonInactive, SAVEBUTTONX, SAVEBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
         }
     }
 
     public boolean playButtonState(SpriteBatch batch, int x, int y) {
         if (x >= PLAYBUTTONX && x <= PLAYBUTTONX + BUTTON_LENGTH && y >= PLAYBUTTONY && y <= PLAYBUTTONY + BUTTON_HEIGHT) {
-            batch.draw(playButtonActive, PLAYBUTTONX, PLAYBUTTONY);
+            batch.draw(playButtonActive, PLAYBUTTONX, PLAYBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
             return true;
         }
         return false;
@@ -70,7 +98,7 @@ public class MainMenu {
 
     public boolean exitButtonState(SpriteBatch batch, int x, int y) {
         if (x >= EXITBUTTONX && x <= EXITBUTTONX + BUTTON_LENGTH && y >= EXITBUTTONY && y <= EXITBUTTONY + BUTTON_HEIGHT) {
-            batch.draw(exitButtonActive, EXITBUTTONX, EXITBUTTONY);
+            batch.draw(exitButtonActive, EXITBUTTONX, EXITBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
             return true;
         }
         return false;
@@ -78,7 +106,23 @@ public class MainMenu {
     
     public boolean exitButton2State(SpriteBatch batch, int x, int y) {
         if (x >= EXITBUTTONX2 && x <= EXITBUTTONX2 + BUTTON_LENGTH && y >= EXITBUTTONY2 && y <= EXITBUTTONY2 + BUTTON_HEIGHT) {
-            batch.draw(exitButtonActive, EXITBUTTONX2, EXITBUTTONY2);
+            batch.draw(exitButtonActive, EXITBUTTONX2, EXITBUTTONY2, BUTTON_LENGTH, BUTTON_HEIGHT);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean saveButtonState(SpriteBatch batch, int x, int y) {
+        if (x >= SAVEBUTTONX && x <= SAVEBUTTONX + BUTTON_LENGTH && y >= SAVEBUTTONY && y <= SAVEBUTTONY + BUTTON_HEIGHT) {
+            batch.draw(saveButtonActive, SAVEBUTTONX, SAVEBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean returnButtonState(SpriteBatch batch, int x, int y) {
+        if (x >= RETURNBUTTONX && x <= RETURNBUTTONX + BUTTON_LENGTH && y >= RETURNBUTTONY && y <= RETURNBUTTONY + BUTTON_HEIGHT) {
+            batch.draw(returnButtonActive, RETURNBUTTONX, RETURNBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
             return true;
         }
         return false;
