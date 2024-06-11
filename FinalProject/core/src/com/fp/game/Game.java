@@ -199,8 +199,11 @@ public class Game extends ApplicationAdapter {
 
             if (mouseOnReturn && isClicked) {
                 menuStage = 0;
-
-            } else if (mouseOnSave && isClicked) {
+                player1.setHp(3);
+                player1.setxPos(650);
+                player1.setyPos(450);
+                baseEnemies.clear();
+            }  else if (mouseOnSave && isClicked) {
                 userName = JOptionPane.showInputDialog(null, "ENTER YOUR NAME!");
                 try {
                     Files.write(Paths.get("saveScores.txt"), (userName + "\n" + player1.getKillCount() + "\n").getBytes(), StandardOpenOption.APPEND);
