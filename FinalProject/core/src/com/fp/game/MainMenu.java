@@ -6,7 +6,6 @@ package com.fp.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 /**
  *
@@ -14,28 +13,28 @@ import com.badlogic.gdx.utils.ScreenUtils;
  */
 public class MainMenu {
 
-    private static int PLAYBUTTONX = 400;
-    private static int PLAYBUTTONY = 400;
-    private static int EXITBUTTONX = 400;
-    private static int EXITBUTTONY = 90;
-    private static int EXITBUTTONX2 = 900;
-    private static int EXITBUTTONY2 = 70;
-    private static int TUTORIALBUTTONX = 1200;
-    private static int TUTORIALBUTTONY = 700;
-    private static int TITLEX = 0;
-    private static int TITLEY = 750;
+    private static final int PLAYBUTTONX = 400;
+    private static final int PLAYBUTTONY = 400;
+    private static final int EXITBUTTONX = 400;
+    private static final int EXITBUTTONY = 90;
+    private static final int EXITBUTTONX2 = 870;
+    private static final int EXITBUTTONY2 = 70;
+    private static final int TUTORIALBUTTONX = 1200;
+    private static final int TUTORIALBUTTONY = 700;
+    private static final int TITLEX = 0;
+    private static final int TITLEY = 750;
     private static final int BUTTON_LENGTH = 524;
     private static final int BUTTON_HEIGHT = 234;
     private static final int TUTORIAL_LENGTH = 200;
     private static final int TUTORIAL_HEIGHT = 200;
-    private Texture background;
-    private Texture playButtonActive;
-    private Texture playButtonInactive;
-    private Texture exitButtonActive;
-    private Texture exitButtonInactive;
-    private Texture tutorialButton;
-    private Texture title;
-    private Texture tutorial;
+    private final Texture background;
+    private final Texture playButtonActive;
+    private final Texture playButtonInactive;
+    private final Texture exitButtonActive;
+    private final Texture exitButtonInactive;
+    private final Texture tutorialButton;
+    private final Texture title;
+    private final Texture tutorial;
 
     public MainMenu() {
         background = new Texture("mainmenuart.JPG");
@@ -90,6 +89,94 @@ public class MainMenu {
             return true;
         }
         return false;
+    }
+
+    public static int getPLAYBUTTONX() {
+        return PLAYBUTTONX;
+    }
+
+    public static int getPLAYBUTTONY() {
+        return PLAYBUTTONY;
+    }
+
+    public static int getEXITBUTTONX() {
+        return EXITBUTTONX;
+    }
+
+    public static int getEXITBUTTONY() {
+        return EXITBUTTONY;
+    }
+
+    public static int getEXITBUTTONX2() {
+        return EXITBUTTONX2;
+    }
+
+    public static int getEXITBUTTONY2() {
+        return EXITBUTTONY2;
+    }
+
+    public static int getTUTORIALBUTTONX() {
+        return TUTORIALBUTTONX;
+    }
+
+    public static int getTUTORIALBUTTONY() {
+        return TUTORIALBUTTONY;
+    }
+
+    public static int getTITLEX() {
+        return TITLEX;
+    }
+
+    public static int getTITLEY() {
+        return TITLEY;
+    }
+
+    public static int getBUTTON_LENGTH() {
+        return BUTTON_LENGTH;
+    }
+
+    public static int getBUTTON_HEIGHT() {
+        return BUTTON_HEIGHT;
+    }
+
+    public static int getTUTORIAL_LENGTH() {
+        return TUTORIAL_LENGTH;
+    }
+
+    public static int getTUTORIAL_HEIGHT() {
+        return TUTORIAL_HEIGHT;
+    }
+
+    public Texture getBackground() {
+        return background;
+    }
+
+    public Texture getPlayButtonActive() {
+        return playButtonActive;
+    }
+
+    public Texture getPlayButtonInactive() {
+        return playButtonInactive;
+    }
+
+    public Texture getExitButtonActive() {
+        return exitButtonActive;
+    }
+
+    public Texture getExitButtonInactive() {
+        return exitButtonInactive;
+    }
+
+    public Texture getTutorialButton() {
+        return tutorialButton;
+    }
+
+    public Texture getTitle() {
+        return title;
+    }
+
+    public Texture getTutorial() {
+        return tutorial;
     }
 
 }

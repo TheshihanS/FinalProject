@@ -44,6 +44,7 @@ public class Game extends ApplicationAdapter {
         0 = main menu
         1 = game menu
         2 = end menu
+        3 = tutorial menu
          */
         menuStage = 0;
         spinach = new Texture("spinach.png");
@@ -171,12 +172,14 @@ public class Game extends ApplicationAdapter {
         //MAIN MENU//
         /////////////
         boolean mouseOnPlay, mouseOnExit, mouseOnTutorial;
+        
         if (menuStage == 0) {
            
             mainMenu.render(batch, menuStage);
             mouseOnPlay = mainMenu.playButtonState(batch, mouseXPos, mouseYPos);
             mouseOnExit = mainMenu.exitButtonState(batch, mouseXPos, mouseYPos);
             mouseOnTutorial = mainMenu.tutorialButtonState(batch, mouseXPos, mouseYPos);
+            
             if (mouseOnPlay && isClicked) {
                 menuStage = 1;
             } else if (mouseOnExit && isClicked) {
