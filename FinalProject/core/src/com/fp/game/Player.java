@@ -15,6 +15,7 @@ public class Player extends GameObject{
     protected int hp;
     protected int coins;
     protected boolean moving;
+    protected int killCount = 0;
     public Player(float xSpeed, float ySpeed, float xPos, float yPos, int sideLength, boolean shooting, int hp, boolean moving) {
         super(xSpeed,ySpeed,xPos,yPos, sideLength);
         this.shooting = shooting;
@@ -47,5 +48,12 @@ public class Player extends GameObject{
         this.moving = moving;
     }
     
+    public int getKillCount() {
+        return killCount;
+    }
+
+    public void addKillCount(int k) {
+        this.killCount = this.killCount + k;
+    }
     
 }

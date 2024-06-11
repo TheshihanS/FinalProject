@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -16,6 +18,7 @@ public class Game extends ApplicationAdapter {
     SpriteBatch batch;
     Texture playerIMG, knifeUp, knifeRight, knifeLeft, knifeDown, heart, backgroundSheet, spinach, squash, mushroom, eggplant, carrot, cabbage;
     Texture panBL, panBR, panTR, panTL;
+    Texture one, two, three, four, five, six, seven, eight, nine, zero, killCountImg;
     TextureRegion background1, background2, background3;
     int lastKey, randomSide, randomSpawn, menuStage;
     MainMenu mainMenu;
@@ -24,10 +27,11 @@ public class Game extends ApplicationAdapter {
 
     ArrayList<Projectile> projectiles;
     ArrayList<Enemy> baseEnemies;
+    ArrayList<Integer> killCountDigits;
 
     Texture walkUpSheet, walkDownSheet, walkRightSheet, walkLeftSheet;
     Animation<TextureRegion> walkUpAni, walkDownAni, walkRightAni, walkLeftAni, currentAni;
-
+    FileWriter writer;
     float stateTime;
 
     int col = 3;
@@ -62,7 +66,20 @@ public class Game extends ApplicationAdapter {
 
         heart = new Texture("apple_red.png");
 
-        player1 = new Player(0, 0, 0, 0, 50, false, 3, false);
+        zero = new Texture("zero.png");
+        one = new Texture("one.png");
+        two = new Texture("two.png");
+        three = new Texture("three.png");
+        four = new Texture("four.png");
+        five = new Texture("five.png");
+        six = new Texture("six.png");
+        seven = new Texture("seven.png");
+        eight = new Texture("eight.png");
+        nine = new Texture("nine.png");
+        killCountImg = new Texture("killCountImg.png");
+
+        player1 = new Player(0, 0, 650, 450, 50, false, 3, false);
+
         mainMenu = new MainMenu();
         backgroundSheet = new Texture("tileset.jpg");
         background1 = new TextureRegion(backgroundSheet, 0, 30, 48, 32);
@@ -71,6 +88,7 @@ public class Game extends ApplicationAdapter {
 
         projectiles = new ArrayList();
         baseEnemies = new ArrayList();
+        killCountDigits = new ArrayList();
 
         walkUpSheet = new Texture("heroUp.png");
         walkDownSheet = new Texture("heroDown.png");
@@ -132,7 +150,7 @@ public class Game extends ApplicationAdapter {
 
     @Override
     public void render() {
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
         batch.begin();
 
         //////////////////
@@ -182,9 +200,48 @@ public class Game extends ApplicationAdapter {
             }
         } else if (menuStage == 1) {
 
-            batch.draw(heart, 100, 815, 50, 50);
-            batch.draw(heart, 175, 815, 50, 50);
-            batch.draw(heart, 250, 815, 50, 50);
+            //displaying hearts
+            int heartx = 100;
+            for (int i = 0; i < player1.hp; i++) {
+                batch.draw(heart, heartx, 25, 50, 50);
+                heartx += 100;
+            }
+
+            //displaying killcount
+            numberSep(player1.getKillCount());
+
+            int killCountX = 1200;
+
+            //running for each number
+            for (int i = 0; i < killCountDigits.size(); i++) {
+
+                //displaying specific number
+                if (killCountDigits.get(i) == 0) {
+                    batch.draw(zero, killCountX, 50);
+                } else if (killCountDigits.get(i) == 1) {
+                    batch.draw(one, killCountX, 50);
+                } else if (killCountDigits.get(i) == 2) {
+                    batch.draw(two, killCountX, 50);
+                } else if (killCountDigits.get(i) == 3) {
+                    batch.draw(three, killCountX, 50);
+                } else if (killCountDigits.get(i) == 4) {
+                    batch.draw(four, killCountX, 50);
+                } else if (killCountDigits.get(i) == 5) {
+                    batch.draw(five, killCountX, 50);
+                } else if (killCountDigits.get(i) == 6) {
+                    batch.draw(six, killCountX, 50);
+                } else if (killCountDigits.get(i) == 7) {
+                    batch.draw(seven, killCountX, 50);
+                } else if (killCountDigits.get(i) == 8) {
+                    batch.draw(eight, killCountX, 50);
+                } else if (killCountDigits.get(i) == 9) {
+                    batch.draw(nine, killCountX, 50);
+                }
+                killCountX -= 50;
+            }
+
+            killCountDigits.clear();
+            batch.draw(killCountImg, 1100, 0);
 
             stateTime += Gdx.graphics.getDeltaTime();
             TextureRegion currentFrame = currentAni.getKeyFrame(stateTime, true);
@@ -215,6 +272,15 @@ public class Game extends ApplicationAdapter {
 
         }
 
+        
+        try {
+            writer = new FileWriter("saveScores.txt");
+            writer.write("wjpfawalfw\nudwhadiwjadw");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+        }
+
         batch.end();
 
         //game menu
@@ -226,7 +292,7 @@ public class Game extends ApplicationAdapter {
             }
 
             //////////////
-            ///MOVEMENT///
+            ///PLAYER/////
             //////////////
             int normalSpeed = 2;
 
@@ -258,6 +324,21 @@ public class Game extends ApplicationAdapter {
             } else {
                 player1.setySpeed(0);
                 player1.setMoving(false);
+            }
+
+            if (player1.getxPos() < 50) {
+                player1.setxSpeed(0);
+                player1.setxPos(50);
+            } else if (player1.getxPos() > 1250) {
+                player1.setxSpeed(0);
+                player1.setxPos(1250);
+            }
+            if (player1.getyPos() < 75) {
+                player1.setySpeed(0);
+                player1.setyPos(75);
+            } else if (player1.getyPos() > 750) {
+                player1.setySpeed(0);
+                player1.setyPos(750);
             }
 
             ////////////////
@@ -322,7 +403,7 @@ public class Game extends ApplicationAdapter {
 
             for (int i = 0; i < projectiles.size(); i++) {
 
-                if ((projectiles.get(i).getxPos() < -50 || projectiles.get(i).getxPos() > 1200 || projectiles.get(i).getyPos() < 0 || projectiles.get(i).getyPos() > 900)) {
+                if ((projectiles.get(i).getxPos() < 100 || projectiles.get(i).getxPos() > 1275 || projectiles.get(i).getyPos() < 100 || projectiles.get(i).getyPos() > 775)) {
                     projectiles.get(i).setBulletAlive(false);
                 }
 
@@ -383,6 +464,8 @@ public class Game extends ApplicationAdapter {
                     if (baseEnemies.get(i).isCollision((GameObject) projectiles.get(j)) == true) {
                         projectiles.get(j).setBulletAlive(false);
                         baseEnemies.get(i).setHp(baseEnemies.get(i).getHp() - 1);
+                        player1.addKillCount(1);
+
                     }
                 }
                 if (baseEnemies.get(i).isCollision((GameObject) player1) == true) {
@@ -407,4 +490,17 @@ public class Game extends ApplicationAdapter {
         spinach.dispose();
         walkUpSheet.dispose();
     }
+
+    public int numberSep(int num) {
+        if (num < 10) {
+            killCountDigits.add(num);
+            return num;
+        } else {
+            int right = num % 10;
+            int left = num / 10;
+            killCountDigits.add(right);
+            return numberSep(left);
+        }
+    }
+
 }
