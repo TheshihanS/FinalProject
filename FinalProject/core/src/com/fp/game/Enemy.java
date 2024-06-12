@@ -32,20 +32,31 @@ public class Enemy extends GameObject{
     
     
     public void enemyPathing(Player player1) {
+        int enemySpeed = 1;
+        
+        if (player1.getKillCount() > 10) {
+            enemySpeed = 2;
+        } else if (player1.getKillCount() > 50) {
+            enemySpeed = 3;
+        } else if (player1.getKillCount() > 100) {
+            enemySpeed = 5;
+        }
+        
+        
         int randomness = (int) (Math.random() * 4) + 1;
         int randomDir = (int) (Math.random() * 40) + 1;
         if (randomDir == 1) {
-            this.xSpeed = 1;
+            this.xSpeed = enemySpeed;
         }
         
         if (player1.getxPos() > this.xPos && randomness == 1) {
-            this.xSpeed = 1;
+            this.xSpeed = enemySpeed;
         } else if (player1.getxPos() < this.xPos & randomness == 2) {
-            this.xSpeed = -1;
+            this.xSpeed = -enemySpeed;
         }  if (player1.getyPos() > this.yPos && randomness == 3) {
-            this.ySpeed = 1;
+            this.ySpeed = enemySpeed;
         } else if (player1.getyPos() < this.yPos && randomness == 4) {
-            this.ySpeed = -1;
+            this.ySpeed = -enemySpeed;
         }
     }
     

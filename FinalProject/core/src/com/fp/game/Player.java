@@ -55,5 +55,9 @@ public class Player extends GameObject{
     public void addKillCount(int k) {
         this.killCount = this.killCount + k;
     }
+
+    public void setKillCount(int killCount) {
+        this.killCount = killCount;
+    }
     
 }

@@ -4,6 +4,7 @@
  */
 package com.fp.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -60,9 +61,11 @@ public class MainMenu {
     private final Texture saveButtonActive;
     private final Texture leaderBoardInactive;
     private final Texture leaderBoardActive;
+   
     
     public MainMenu() {
-        background = new Texture("mainmenuart.JPG");
+        background = new Texture(Gdx.files.internal("mainmenuart.JPG"));
+
         playButtonActive = new Texture("playButtonActive.PNG");
         playButtonInactive = new Texture("playButtonInactive.PNG");
         exitButtonActive = new Texture("exitButtonActive.PNG");

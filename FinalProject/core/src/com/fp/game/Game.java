@@ -272,6 +272,7 @@ public class Game extends ApplicationAdapter {
                 player1.setHp(3);
                 player1.setxPos(650);
                 player1.setyPos(450);
+                player1.setKillCount(0);
                 baseEnemies.clear();
             } else if (mouseOnSave && isClicked) {
                 userName = JOptionPane.showInputDialog(null, "ENTER YOUR NAME!");
@@ -310,7 +311,7 @@ public class Game extends ApplicationAdapter {
                 }
                 
                 if (name.size() > 0) {
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < scoresDisplayed; i++) {
                         message += name.get(i) + ": " + scores.get(i) + "\n";
                     }
                 }
