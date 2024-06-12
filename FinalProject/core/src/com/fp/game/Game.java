@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
@@ -79,7 +80,7 @@ public class Game extends ApplicationAdapter {
         return null;
     }
     
-    public void  sort(ArrayList<Integer> score, ArrayList<String> name) {
+    public void sort(List<String> score, List<String> name) {
         boolean swapped = true;
         // the number of passes
         int passes = 1;
@@ -90,9 +91,9 @@ public class Game extends ApplicationAdapter {
             // checks through the entire array minus the number of passes because on each pass the last number will always be in the right order
             for (int i  = 0; i < (score.size() - passes); i++) {
                 // checks i and the value after it, if i is bigger
-                if (score.get(i) > score.get(i+1)) {
+                if (Integer.parseInt(score.get(i)) < Integer.parseInt(score.get(i+1))) {
                     // swaps them
-                    int temp1 = score.get(i);
+                    String temp1 = (score.get(i));
                     score.set(i, score.get(i+1));
                     score.set(i+1, temp1);
 
@@ -281,7 +282,41 @@ public class Game extends ApplicationAdapter {
                     System.out.println("Error: " + e);
                 }
             } else if (mouseOnLeaderBoard && isClicked){
-                //anthony
+                List<String> scores = new ArrayList();
+                List<String> name = new ArrayList();
+                
+                File fName = new File("FinalProject\\assets\\nameScores.txt");
+                File fScore = new File("FinalProject\\assets\\saveScores.txt");
+                
+                try {
+                    name = Files.readAllLines(Paths.get("nameScores.txt"));
+                    scores = Files.readAllLines(Paths.get("saveScores.txt"));
+                    System.out.println(name.get(0));
+                } catch (IOException e) {
+                    
+                }
+                //fileReaderScore(fScore, scores);
+                
+                sort(scores, name);
+                
+                String message = "";
+                
+                int scoresDisplayed = 0;
+                
+                if (name.size() > 3) {
+                    scoresDisplayed = 3;
+                } else {
+                    scoresDisplayed = name.size();
+                }
+                
+                if (name.size() > 0) {
+                    for (int i = 0; i < 3; i++) {
+                        message += name.get(i) + ": " + scores.get(i) + "\n";
+                    }
+                }
+
+                JOptionPane.showMessageDialog(null, message);
+                
             }
         } else if (menuStage == 1) {
 
@@ -365,7 +400,7 @@ public class Game extends ApplicationAdapter {
         if (menuStage == 1) {
 
             //player health
-            if (player1.getHp() == 0) {
+            if (player1.getHp() <= 0) {
                 menuStage = 2;
             }
 
