@@ -238,7 +238,7 @@ public class Game extends ApplicationAdapter {
         /////////////
         //MENUS//
         /////////////
-        boolean mouseOnPlay, mouseOnExit, mouseOnTutorial, mouseOnReturn, mouseOnSave;
+        boolean mouseOnPlay, mouseOnExit, mouseOnTutorial, mouseOnReturn, mouseOnSave, mouseOnLeaderBoard;
 
         if (menuStage == 0) {
 
@@ -263,7 +263,7 @@ public class Game extends ApplicationAdapter {
         } else if (menuStage == 2) {
             mouseOnReturn = mainMenu.returnButtonState(batch, mouseXPos, mouseYPos);
             mouseOnSave = mainMenu.saveButtonState(batch, mouseXPos, mouseYPos);
-
+            mouseOnLeaderBoard = mainMenu.leaderBoardButtonState(batch, mouseXPos, mouseYPos);
             mainMenu.render(batch, menuStage);
 
             if (mouseOnReturn && isClicked) {
@@ -280,6 +280,8 @@ public class Game extends ApplicationAdapter {
                 } catch (IOException e) {
                     System.out.println("Error: " + e);
                 }
+            } else if (mouseOnLeaderBoard && isClicked){
+                //anthony
             }
         } else if (menuStage == 1) {
 

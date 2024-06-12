@@ -30,8 +30,8 @@ public class MainMenu {
     private static final int SAVEBUTTONX = 560;
     private static final int SAVEBUTTONY = 400;
     //return button properties
-    private static final int RETURNBUTTONX = 0;
-    private static final int RETURNBUTTONY = 0;
+    private static final int RETURNBUTTONX = 30;
+    private static final int RETURNBUTTONY = 70;
     //end title properties
     private static final int ENDTITLEX = 90;
     private static final int ENDTITLEY = 620;
@@ -41,6 +41,10 @@ public class MainMenu {
     //tutorial button size
     private static final int TUTORIAL_LENGTH = 200;
     private static final int TUTORIAL_HEIGHT = 200;
+    //leader board button properties
+    private static final int LEADERBOARDX = 560;
+    private static final int LEADERBOARDY = 100;
+    
     private final Texture background;
     private final Texture playButtonActive;
     private final Texture playButtonInactive;
@@ -54,6 +58,8 @@ public class MainMenu {
     private final Texture returnButtonActive;
     private final Texture saveButtonInactive;
     private final Texture saveButtonActive;
+    private final Texture leaderBoardInactive;
+    private final Texture leaderBoardActive;
     
     public MainMenu() {
         background = new Texture("mainmenuart.JPG");
@@ -69,6 +75,8 @@ public class MainMenu {
         returnButtonActive = new Texture("returnButtonActive.PNG");
         saveButtonActive = new Texture("saveButtonActive.PNG");
         saveButtonInactive = new Texture("saveButtonInactive.PNG");
+        leaderBoardInactive = new Texture("leaderBoardInactive.PNG");
+        leaderBoardActive = new Texture("leaderBoardActive.PNG");
     }
 
     public void render(SpriteBatch batch, int stage) {
@@ -85,6 +93,7 @@ public class MainMenu {
             batch.draw(endTitle, ENDTITLEX, ENDTITLEY);
             batch.draw(returnButtonInactive, RETURNBUTTONX, RETURNBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
             batch.draw(saveButtonInactive, SAVEBUTTONX, SAVEBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
+            batch.draw(leaderBoardInactive, LEADERBOARDX, LEADERBOARDY, BUTTON_LENGTH, BUTTON_HEIGHT);
         }
     }
 
@@ -123,6 +132,14 @@ public class MainMenu {
     public boolean returnButtonState(SpriteBatch batch, int x, int y) {
         if (x >= RETURNBUTTONX && x <= RETURNBUTTONX + BUTTON_LENGTH && y >= RETURNBUTTONY && y <= RETURNBUTTONY + BUTTON_HEIGHT) {
             batch.draw(returnButtonActive, RETURNBUTTONX, RETURNBUTTONY, BUTTON_LENGTH, BUTTON_HEIGHT);
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean leaderBoardButtonState(SpriteBatch batch, int x, int y) {
+        if (x >= LEADERBOARDX && x <= LEADERBOARDX + BUTTON_LENGTH && y >= LEADERBOARDY && y <= LEADERBOARDY + BUTTON_HEIGHT) {
+            batch.draw(leaderBoardActive, LEADERBOARDX, LEADERBOARDY, BUTTON_LENGTH, BUTTON_HEIGHT);
             return true;
         }
         return false;
